@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { getUserRole } from '../../utils/auth';
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function MainHeader() {
-    const role = getUserRole();
+    const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate()
     return (
         <header className="bg-blue-600 text-white p-4">
             <nav>
@@ -11,12 +14,29 @@ function MainHeader() {
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/contact">Contact</Link></li>
                     <li><Link to="/shop">Shop</Link></li>
-                    { role === 'admin' &&
+                    {user?.role === 'user' &&
+                        <li><Link to="/user">User</Link></li>
+                    }
+                    {user?.role === 'admin' &&
                         <li><Link to="/dashboard">Dashboard</Link></li>
                     }
-                    {!role ?
-                        <li><Link to="/login">Login</Link></li>
-                        : <li><Link to="/logout">Logout</Link></li>
+                    {user?.role ?
+                        <Link
+                            to="/login"
+                            onClick={(e) => {
+                                e.preventDefault(); // stop immediate navigation
+                                logout();
+                                navigate("/login"); // redirect manually
+                            }}
+                        >
+                            Logout
+                        </Link>
+                        : 
+                        <>
+                            <li><Link to="/login">Login</Link></li>
+                            <li><Link to="/regiser">Register</Link></li>
+                        </>
+                        
                     }
                 </ul>
             </nav>

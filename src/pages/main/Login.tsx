@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Login() {
+
+    const { login } = useContext(AuthContext);
+
     const navigate = useNavigate();
-    const [data, setData] = useState<{ [key: string]: string }>({});
+    const [data, setData] = useState<{ [key: string]: string }>({
+        email:'atulassan007@gmail.com', password: 'password'
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -23,19 +28,45 @@ export default function Login() {
         console.log("Form submitted:", data);
 
         try {
-            const response = await axios.post("http://localhost:5050/api/v1/login", data);
+            const response = await login(data);
             console.log("Login Success:", response);
             // Example: store token in localStorage
-            console.log(response.data.token);
+            console.log('Token Saved++++', response.data.token);
             localStorage.setItem("token", response.data.token);
             // redirect to dashboard after login
-            navigate("/dashboard", { replace: true });
+            if(response.data.data.role === 'admin') {
+                navigate("/dashboard", { replace: true });
+            }
+            if(response.data.data.role === 'user') {
+                navigate("/user", { replace: true });
+            }            
         } catch (err: any) {
             console.error("Login Failed:", err.response?.data || err.message);
             setError(err.response?.data?.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
+
+        /*try {
+            const response = await axios.post("http://localhost:5050/api/v1/login", data);
+            console.log("Login Success:", response);
+            // Example: store token in localStorage
+            console.log(response.data.token);
+            localStorage.setItem("token", response.data.token);
+            // redirect to dashboard after login
+            if(response.data.data.role === 'admin') {
+                navigate("/dashboard", { replace: true });
+            }
+            if(response.data.data.role === 'user') {
+                navigate("/shop", { replace: true });
+            }
+            
+        } catch (err: any) {
+            console.error("Login Failed:", err.response?.data || err.message);
+            setError(err.response?.data?.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }*/
 
     };
 

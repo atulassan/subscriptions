@@ -15,6 +15,7 @@ const Contact = lazy(() => import('../pages/main/Contact'));
 const Shop = lazy(() => import('../pages/main/Shop'));
 const Login = lazy(() => import('../pages/main/Login'));
 const UnAuthorized = lazy(() => import('../pages/main/UnAuthorized'));
+const User = lazy(() => import('../pages/main/User'));
 
 
 const Dashboard = lazy(()=> import("../pages/dashboard/Dashboard"))
@@ -39,6 +40,7 @@ function Approutes(){
                         <Route path="contact" element={<Contact />} />
                         <Route path="shop" element={<Shop />} />
                         <Route path="login" element={<Login />} />
+                        <Route path="user" element={<User />} />
                         <Route path="unauthorized" element={<UnAuthorized />} />
                     </Route>
                     <Route element={<PrivateRoute allowedRoles={["admin"]} />}>

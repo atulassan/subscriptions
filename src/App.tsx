@@ -1,12 +1,15 @@
 import AppRoutes from "./routes/AppRoutes";
+import AuthProvider from "./context/AuthContext";
 
-function App(props:any) {
+function App(props: any) {
   return (
     <>
-    <div>
-        <AppRoutes {...props} />
-    </div>
-    </>    
+      <div>
+        <AuthProvider>
+          <AppRoutes {...props} />
+        </AuthProvider>
+      </div>
+    </>
   );
 }
 
