@@ -37,7 +37,7 @@ export default function Login() {
             if(response.data.data.role === 'admin') {
                 navigate("/dashboard", { replace: true });
             }
-            if(response.data.data.role === 'user') {
+            if(response.data.data.role === 'subscriber') {
                 navigate("/user", { replace: true });
             }            
         } catch (err: any) {

@@ -1,13 +1,13 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { getUserRole } from "../utils/auth";
+import { getDecodedUser } from "../utils/auth";
 
 interface PrivateRouteProps {
   allowedRoles: string[];
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
-  const role = getUserRole();
+  const role  = getDecodedUser()?.role; // instead desctructure we can go for optional chaining
 
   if (!role) {
     return <Navigate to="/login" replace />;

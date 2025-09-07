@@ -1,18 +1,20 @@
-// utils/auth.ts
 import { jwtDecode } from "jwt-decode";
 
-
-interface JwtPayload {
+interface MyJwtPayload {
+  id: number;
+  name: string;
+  email: string;
   role: string;
   exp: number;
+  iat: number;
 }
 
-export const getUserRole = (): string | null => {
+export const getDecodedUser = (): MyJwtPayload | null => {
   const token = localStorage.getItem("token");
   if (!token) return null;
 
   try {
-    const decoded = jwtDecode<JwtPayload>(token);
+    const decoded = jwtDecode<MyJwtPayload>(token);
 
     // check expiry
     if (decoded.exp * 1000 < Date.now()) {
@@ -20,7 +22,7 @@ export const getUserRole = (): string | null => {
       return null;
     }
 
-    return decoded.role;
+    return decoded; // return full object instead of only role
   } catch {
     return null;
   }
