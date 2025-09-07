@@ -1,2 +1,2 @@
-# Subscription Channels with Mutual Funds Orders
+# Subscription management along with mutual fund order processing
 
